@@ -11,6 +11,7 @@ T dot(const Vector<T>& left, const Vector<T>& right)
         std::cerr << "Dot product of two vectors with \
                      different lengths is being attempted"
                   << std::endl;
+				return result;
     }
     else
     {

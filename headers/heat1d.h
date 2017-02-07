@@ -1,8 +1,8 @@
 #pragma once
 #include "vector.h"
 #include "matrix.h"
-#include "vector_operations.cpp"
-#include "conjugategradient.cpp"
+#include "vector_operations.h"
+#include "conjugategradient.h"
 #include <math.h>
 #ifndef M_PI
 #define M_PI (3.14159265358979323846)

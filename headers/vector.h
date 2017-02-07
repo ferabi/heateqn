@@ -1,18 +1,20 @@
 #pragma once
 #include <iostream>
 #include <memory>
+
 //forward declaration for use in friend functions
 template<typename T>
 class Vector;
 
-template<typename T>
 //multiplying with a scalar on the right
+template<typename T>
 Vector<T> operator*(Vector<T>& vec, const T& scalar);
 
-template<typename T>
 //multiplying with a scalar on the left
+template<typename T>
 Vector<T> operator*(const T& scalar, Vector<T>& vec);
 
+//overloading the insertion operator
 template<typename T>
 std::ostream& operator<<(std::ostream& os, Vector<T>& vec);
 
@@ -214,14 +216,12 @@ Vector<T> operator*(const T& scalar, Vector<T>& vec)
 template<typename T>
 std::ostream& operator<<(std::ostream& os, Vector<T>& vec)
 {
-    //os << "{";
     for(auto i=0; i < vec.get_length(); i++)
     {
-        os << vec[i] << std::endl;//(i != vec.get_length()-1)?",":"" ;
+        os << vec[i] << std::endl;
     }
-    //os << std::endl;
-
-    return os;
+    
+		return os;
 }
 template<typename T>
 T Vector<T>::operator[](const unsigned int& i) const

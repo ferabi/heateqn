@@ -1,9 +1,10 @@
-#include "vector.h"
+#include "../headers/vector.h"
+//#include "vector_operations.cpp"
 #include <iostream>
-#include "matrix.h"
-#include "heat2d.h"
+#include "../headers/matrix.h"
+//#include "conjugategradient.cpp"
+#include "../headers/heat2d.h"
 #include <fstream>
-
 int main()
 {
     /*
@@ -38,8 +39,7 @@ int main()
 
     return 0;
     */
-    
-		//matrix constructor
+    //matrix constructor
     Vector<float> b({1,2});
     Matrix<float> A(2,2);
     Vector<float> x;
@@ -47,43 +47,35 @@ int main()
     A[{0,1}] = 1;
     A[{1,0}] = 1;
     A[{1,1}] = 3;
-    
-		x = matvec(A,b);
-    
-		std::cout << x << std::endl;
-    
-		//A[{1,1}] = 4;
+    x = matvec(A,b);
+    std::cout << x << std::endl;
+    //A[{1,1}] = 4;
     //A[{1,2}] = 2;
     //A[{2,0}] = 1;
     //A[{2,1}] = 2;
     //A[{2,2}] = 3;
    
     float tol = 1e-10;
+    unsigned int max = 100;
+    int j = cg(A, b, x, tol, max);
+    //Vector<float> f =  x * tol;
     
-		unsigned int max = 100;
-    
-		int j = cg(A, b, x, tol, max);
-    
-		//Vector<float> f =  x * tol;
     std::cout << x[0]<< std::endl;
     std::cout << x[1]<< std::endl;
-    
-		//std::cout << x[2]<< std::endl;
+    //std::cout << x[2]<< std::endl;
     std::cout << j << std::endl;
     //Matrix<float> i(3);
     //i(3);
     std::ofstream data;
-    Heat2D heat_sol(0.3125, 3,0.1);
-    Vector<double> v =heat_sol.solve(0.5);
-    
-		data.open("plots/datasolve.txt");
+    Heat2D heat_sol(0.3125, 99,0.001);
+    Vector<double> v =heat_sol.solve(1);
+    data.open("datasolve.txt");
     std::cout  << "from numerical solving:" << std::endl;
     data << v << std::endl;
     data.close();
-    
-		Vector<double> g = heat_sol.exact(0.5);
+    Vector<double> g = heat_sol.exact(1);
     std::cout << "from exact solution" << std::endl;
-    data.open("plots/dataexact.txt");
+    data.open("dataexact.txt");
     data << g << std::endl;
     data.close();
     //std::cout << remainder(1,0.1) << std::endl;

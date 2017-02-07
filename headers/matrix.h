@@ -1,13 +1,14 @@
 #pragma once
-
 #include "iostream"
 #include "map"
 #include "array" 
 #include "vector.h"
+
 typedef std::array<int,2> Array;
 
+//forward declaration to have a declaration for friend function
 template<typename T>
-class Matrix; //forward declaration to have a declaration for friend function
+class Matrix; 
 
 template<typename T>
 Vector<T> matvec(const Matrix<T>& mat, const Vector<T>& vec);
@@ -19,13 +20,11 @@ template<typename T>
 class Matrix
 {
     /* The entries are stored in the following map:
-     * Row --> Column--->Value
-     * */
-    //typedef std::array<int,2> Array;
+     * {Row --> {Column--->Value}}
+     */
+
     typedef std::map<unsigned int,T> Column;
     typedef std::map<unsigned int, Column> Entry;
-    //typedef typename Entry::iterator Row_iter;
-    //typedef typename Column::iterator Col_iter;
 
     private:
 
@@ -51,7 +50,6 @@ class Matrix
         
         //only for reading stuff from the array
         inline T operator[](const Array& matcoord) const ;
-        //const T operator[](const Array& matcoord) const;
 
         //only for inputting stuff, therefore the reference
         inline T& operator[](const Array& matcoord);
@@ -60,16 +58,9 @@ class Matrix
         friend std::ostream& operator<< <T> (std::ostream& os, Matrix<T>& mat);
         
         //non member member function for matrix and vector multiplication
-        //but restricted to same data type
         friend Vector<T> matvec<T>(const Matrix<T>& mat, const Vector<T>& vec);
 
-        //copy constructor
-        //move constructor
-        //binary arithmatic operator overloading
-        //compound operator overloading
-        //copy assignment constructor
-        //move assignment constructor
-        //destructor
+				//Destructor
         ~Matrix();
 };
 
@@ -97,15 +88,6 @@ T Matrix<T>::operator[](const Array& matcoord) const
         throw;
     return data[matcoord[0]][matcoord[1]];
 }
-
-//template<typename T>
-//const T Matrix<T>::operator[](const Array& matcoord) const
-//{
-//    //use by starting with (0,0) instead of (1,1)
-//    if(matcoord[0] > this->get_rows()-1 || matcoord[1] > this->get_columns()-1 )
-//        throw;
-//    return data[matcoord];
-//}
 
 template<typename T>
 T& Matrix<T>::operator[](const Array& matcoord)
@@ -135,15 +117,18 @@ std::ostream& operator<<(std::ostream& os, Matrix<T>& mat)
 template<typename T>
 Vector<T> matvec(const Matrix<T>& mat, const Vector<T>& vec)
 {
-    //new vector
+    //returning by value instead of a new vector
     Vector<T> result(mat.get_rows());
-    T sum;
+    
+		T sum;
 
     if ( mat.get_columns() != vec.get_length() )
     {
         std::cerr << "The matrix and vector are not the same\
                      size for multiplication" 
                   << std::endl;
+				
+				return result;
     }
 
     else
@@ -159,7 +144,6 @@ Vector<T> matvec(const Matrix<T>& mat, const Vector<T>& vec)
              result[i->first] = sum;
          }
     }
-
     return result;
 }
 

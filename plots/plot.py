@@ -5,8 +5,8 @@ from mpl_toolkits.mplot3d import Axes3D
 
 vec_exact = np.loadtxt("dataexact.txt")
 vec_solve = np.loadtxt("datasolve.txt")
-
-x = np.linspace(0,1,99)
+size = int(np.sqrt(vec_exact.shape[0]))
+x = np.linspace(0,1,size)
 X, Y = np.meshgrid(x,x)
 
 def change(vector):

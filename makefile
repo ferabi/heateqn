@@ -10,23 +10,35 @@ SRC_DIR = src
 #an object directory
 OBJ_DIR = object
 
+#directory for executables
+EXE_DIR = executables
+
+#directory that saves the data in txt files
+DATA = plots
+
 #flags for the compiler
-CFLAGS = -std=c++11 -Wall -I.
+CFLAGS = -std=c++11 -Iheaders
 
-SRCS = $(SRC_DIR)/heat1d.cpp  $(SRC_DIR)/heat2d.cpp  $(SRC_DIR)/testing.cpp  $(SRC_DIR)/vector_operations.cpp
+#SRCS = $(SRC_DIR)/heat1d.cpp  $(SRC_DIR)/heat2d.cpp  $(SRC_DIR)/testing.cpp 
 
-OBJS = $(SRC_DIR)/heat1d.o  $(SRC_DIR)/heat2d.o  $(SRC_DIR)/testing.o  $(SRC_DIR)/vector_operations.o
+OBJS = $(OBJ_DIR)/heat1d.o $(OBJ_DIR)/heat2d.o $(OBJ_DIR)/testing.o
 
-DEPS = $(INC_DIR)/matrix.h $(INC_DIR)/vector.h $(INC_DIR)/heat1d.h $(INC_DIR)/heat2d.h   
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp | $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-all : $(OBJS)
+# The default rule
+$(EXE_DIR)/testing: $(OBJS) | $(EXE_DIR)
+	$(CC) $(CLFAGS) -o $@ $^
 
-$(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp
-	$(CC) $(CFLAGS) $< -o $@
+$(EXE_DIR):
+	mkdir $@
+	
+$(OBJ_DIR):
+	mkdir $@
 
-$(OBJ_DIR)/conjugategradient.o : $(DEPS)
-
-$(OBJ_DIR)/testing.o : $(DEPS)
-
+.PHONY: clean
 clean:
-	rm rf object
+	-rm -rf $(OBJ_DIR)
+	-rm -rf $(EXE_DIR)
+	-rm $(DATA)/*txt
+	-rm $(DATA)/*png
