@@ -48,6 +48,7 @@ Heat1D::Heat1D(const double in_alpha,const unsigned int in_m, const double in_dt
         {
             double ones = (i==j)?1.0:0.0;
             expr = ones - (alpha * (dt/dxsquared) * laplace_op(i,j));
+            
             if (expr != 0)
             {
                 M[{i,j}] = expr;
@@ -56,7 +57,7 @@ Heat1D::Heat1D(const double in_alpha,const unsigned int in_m, const double in_dt
         }
     }
 		
-		//output of the matrix built
+	//output of the matrix built
     //std::cout << M << std::endl;
 }
 
@@ -72,7 +73,7 @@ Vector<double> Heat1D::exact(double in_time) const
     {
         auto exponent = - 1 * M_PI * M_PI* alpha * in_time;
         
-				exact_sol[i] = exp(exponent) * in_sol[i];
+		exact_sol[i] = exp(exponent) * in_sol[i];
     }
     
     return exact_sol;
@@ -85,7 +86,7 @@ Vector<double> Heat1D::solve(double time_end) const
     {
         std::cout << "Input time is not a multiple of dt" << std::endl;
         
-				return Vector<double>(m);
+		return Vector<double>(m);
     }
  
     //initial solution vector w_l when l=0 i.e. w_0
@@ -101,10 +102,10 @@ Vector<double> Heat1D::solve(double time_end) const
         if (steps == -1)
             break;
         
-				w_l = w_l1;
+		w_l = w_l1;
     }
     
-		return w_l1;
+	return w_l1;
 }
 
 
